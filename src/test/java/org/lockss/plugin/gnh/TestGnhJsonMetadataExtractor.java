@@ -24,7 +24,7 @@
  * in this Software without prior written authorization from Stanford University.
  */
 
-package org.lockss.plugin.clockss.gnh;
+package org.lockss.plugin.gnh;
 
 import java.io.InputStream;
 import java.util.Iterator;
