@@ -177,8 +177,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
               <arguments>
                 <argument>-classpath</argument>
                 <classpath/>
-<!--                 <argument>-Dorg.lockss.defaultLogLevel=debug</argument> -->
-                <argument>-Dorg.lockss.defaultLogLevel=warning</argument>
+                <argument>-Dorg.lockss.defaultLogLevel=${loglevel}</argument>
                 <argument>org.lockss.util.PluginPackager</argument>
                 <argument>-pd</argument>
                 <argument>${basedir}/target/classes</argument>
@@ -210,6 +209,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
           <include>**/*.dtd</include>
           <include>**/*.props</include>
           <include>**/*.keystore</include>
+          <include>**/lib/*.jar</include>
         </includes>
       </resource>
     </resources>
