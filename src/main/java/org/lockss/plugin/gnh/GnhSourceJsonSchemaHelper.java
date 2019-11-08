@@ -24,7 +24,7 @@
  * in this Software without prior written authorization from Stanford University.
  */
 
-package org.lockss.plugin.clockss.gnh;
+package org.lockss.plugin.gnh;
 
 import static org.lockss.plugin.clockss.JsonPathJsonMetadataParser.ARRAY_VALUE;
 import static org.lockss.plugin.clockss.JsonPathJsonMetadataParser.STRING_VALUE;

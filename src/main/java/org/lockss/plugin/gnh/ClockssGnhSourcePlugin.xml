@@ -5,7 +5,7 @@
   </entry>
   <entry>
     <string>plugin_identifier</string>
-    <string>org.lockss.plugin.clockss.gnh.ClockssGnhSourcePlugin</string>
+    <string>org.lockss.plugin.gnh.ClockssGnhSourcePlugin</string>
   </entry>
   <entry>
     <string>plugin_version</string>
@@ -34,7 +34,7 @@
   </entry>
   <entry>
     <string>plugin_parent_version</string>
-    <string>15</string>
+    <string>1</string>
   </entry>
   <entry>
     <string>au_name</string>
@@ -64,7 +64,7 @@
     <map>
       <entry>
         <string>*</string>
-        <string>org.lockss.plugin.clockss.gnh.GnhJsonMetadataExtractorFactory</string>
+        <string>org.lockss.plugin.gnh.GnhJsonMetadataExtractorFactory</string>
       </entry>
     </map>
   </entry>
