@@ -189,6 +189,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                 <argument>${keystore.alias}</argument>
                 <argument>-storepass</argument>
                 <argument>${keystore.password}</argument>
+                <argument>-keypass</argument>
+                <argument>${keystore.password}</argument>
                 <argument>-explodelib</argument>
            </arguments>
             </configuration>
