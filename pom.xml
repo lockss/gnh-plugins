@@ -59,8 +59,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
-    <keystore.file>${basedir}/anon.keystore</keystore.file>
-    <keystore.alias>anon</keystore.alias>
   </properties>
 
   <dependencies>
@@ -141,6 +139,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-antrun-plugin</artifactId>
         <version>${version.plugin.maven-antrun-plugin}</version>
+        <dependencies>
+          <dependency>
+            <groupId>ant-contrib</groupId>
+            <artifactId>ant-contrib</artifactId>
+            <version>${version.dependency.ant-contrib}</version>
+          </dependency>
+        </dependencies>
         <executions>
           <execution>
             <id>read-password</id>
@@ -150,10 +155,23 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             <phase>prepare-package</phase>
             <configuration>
               <target>
-                <input message="Keystore password: "
-                  addproperty="keystore.password">
-                  <handler type="secure"/>
-                </input>
+                <taskdef resource="net/sf/antcontrib/antcontrib.properties" />
+		<if>
+		  <and>
+		    <isset property="keystore.file" />
+		    <isset property="keystore.alias" />
+		  </and>
+		  <then>
+                    <input message="Keystore password: "
+			   addproperty="keystore.password">
+                      <handler type="secure"/>
+                    </input>
+		  </then>
+		  <else>
+		    <echo message="keystore.file and keystore.alias must be defined" />
+		    <fail message="keystore.file and keystore.alias must be defined" />
+		  </else>
+		</if>
               </target>
               <exportAntProperties>true</exportAntProperties>
             </configuration>
@@ -229,4 +247,20 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       </testResource>
     </testResources>
   </build>
+
+  <profiles>
+    <profile>
+      <id>insecure</id>
+      <activation>
+	<property>
+          <name>insecure</name>
+	</property>
+      </activation>
+      <properties>
+	<keystore.file>resource:org/lockss/test/goodguy.keystore</keystore.file>
+	<keystore.alias>goodguy</keystore.alias>
+	<keystore.password>f00bar</keystore.password>
+      </properties>
+    </profile>
+  </profiles>
 </project>
