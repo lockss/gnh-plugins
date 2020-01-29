@@ -1,48 +1,67 @@
 # German National Hosting Plugins
 Plugin scaffolding for the German National Hosting Plugins
 
-#### Checkout the sample gnh-plugin
-	`git clone https://github.com/lockss/gnh-plugins.git`
+### Checkout the sample gnh-plugin
+ - `git clone https://github.com/lockss/gnh-plugins.git`\
+   `git checkout develop`
 
  - Plugin files are located in the src and test trees under org/lockss/plugin/gnh.
  - Additional files can be added for different plugins by adding them in folders below that root.
- - You need to generate a keystore and replace the path to the anon.keystore values in the pom file to match the path and name used in the the generate step below.
- - When building, you will be asked for the password to your keystore to sign the plugin jars.
+   
  - The early alpha release is missing support for json plugins and the missing support is found in the clockss directory.
 
-#### Creating a Keystore and Signing Key
+### Creating a Signing Key
 
-- Checkout the lockss-core project:
-	`git clone https://github.com/lockss/lockss-core.git`
+ - To build plugins to be used in a production environemt, a private
+   signing key must be created.  For development and testing in a
+   development environemt no key is needed and this section may be skipped.
 
-- If you want to load standard LOCKSS plugins in addition to your own:
- 1. Copy of src/main/java/org/lockss/plugin/lockss.keystore to top level as anon.keystore.
- 2. Generate a signing keypair by running ./test/scripts/genkey on develop branch to avoid warnings about proprietary keystore type.  Generates
-    - Supply key details on command line or answer prompts.  
-    - Use a secure password for this part.
-    - To "Import certificate into LOCKSS public keystore?" answer "y".
-    - To "LOCKSS Keystore location:" answer anon.keystore from above, or a new keystore file if not merging with standard keystore.
-    - To "LOCKSS Keystore password" accept the default with <enter>.  This is a public keystore and doesn't need a secure password.
-    - To "Trust this certificate?" answer "yes".
- 3. Modify the pom file to reflect the name of the keystore.
-    - If you have kept the name anon.keystore you do not need to modify the pom.
-    - <keystore.file>${basedir}/anon.keystore</keystore.file>
-    - <keystore.alias>anon</keystore.alias>
+ - In addition to the signing key, a public certificate will be generated,
+   which will be used by LOCKSS to validate plugins.  If standard LOCKSS
+   plugins will also be used, this certificate should be combined with the
+   existing certificates in the standard lockss keystore.
+
+ - Checkout the develop bransh of the lockss-core project:\
+	`git clone https://github.com/lockss/lockss-core.git`\
+	`git checkout develop`\
+	`cd lockss-core`
+
+ - If combining certs, copy src/main/java/org/lockss/plugin/lockss.keystore
+   to some file \<cert_file\>.
+
+ - Generate a signing keypair by running `./test/scripts/genkey`.  (-h for help)
+    - Supply key details on command line or answer prompts.
+    - Use a secure passphrase.
+    - To "LOCKSS Keystore location:" answer \<cert_file\> from above, or a new keystore file if not combining with the standard keystore.
+	- To "LOCKSS Keystore password" accept the default with \<enter\>.  This is a public keystore and doesn't need a secure password.
+	- To "Trust this certificate?" answer "yes".
+	- The generated private keystore file (default \<alias\>.keystore), and
+      the alias will be used when building plugins.
+	- The cert file must be made available to the production LOCKSS services.  
 
 ### Building and Signing Plugins.
 
- - In gnh-plugins directory:
-    - `mvn package`
-    - Follow the prompts and provide a password when requested.
+ - In the gnh-plugins directory:
+    - For development: `mvn package -Dinsecure`\.  This will create an unsigned plugin which can only be used in the development environemt.
+    - For production: `mvn package -Dkeystore.location=<private_keystore_file> -Dkeystore.alias=<alias>`.  Supply the keystore passphrase when prompted, or on the command line with `-Dkeystore.password=<password>`.\
+    - The plugin jar(s) will be written to target/pluginjars .
 
-#### Moving Plugins to Prop Server
+### Using Plugins.
 
-- Copy target/pluginjars/*.jar to plugin registry dir on your prop server.
-- Copy <FOO>.keystore to KEYSTORE_URL on prop server.
-- In lockss.xml, set org.lockss.plugin.keystore.location to KEYSTORE_URL.
+ - To load a signed or unsigned plugin into the development and testing
+   environemt, pass the path to the plugin jar to runcluster with `-jar
+   <plugin_jar>`.  Either org.lockss.plugin.registryJars or
+   org.lockss.plugin.registry must also be set.  See
+   [runcluster](https://github.com/lockss/laaws-dev-scripts/tree/develop/runcluster)
+   for details.
+
+ - For production:
+    - Copy target/pluginjars/*.jar to plugin registry dir on your prop server.
+    - Copy keystore \<cert_file\> to \<cert_keystore_url\> on prop server.
+    - In lockss.xml, set org.lockss.plugin.keystore.location to \<cert_keystore_url\>.
 
 ### Testing Plugins.
 
-- The testing framework can be found in the github project. See http://github.com/lockss/laaws-dev-scripts.
+- See the testing framework in the runcluster directory of the [laaws-dev-scripts project](https://github.com/lockss/laaws-dev-scripts.git
 
-
+http://github.com/lockss/laaws-dev-scripts).
