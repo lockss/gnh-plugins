@@ -257,9 +257,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	</property>
       </activation>
       <properties>
-	<keystore.file>resource:org/lockss/test/goodguy.keystore</keystore.file>
-	<keystore.alias>goodguy</keystore.alias>
-	<keystore.password>f00bar</keystore.password>
+	<keystore.file>resource:org/lockss/test/develop.keystore</keystore.file>
+	<keystore.alias>develop</keystore.alias>
+	<keystore.password>devpass</keystore.password>
       </properties>
     </profile>
   </profiles>
