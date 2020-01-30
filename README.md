@@ -12,19 +12,20 @@ Plugin scaffolding for the German National Hosting Plugins
 
 ### Creating a Signing Key
 
- - To build plugins to be used in a production environemt, a private
+ - To build plugins to be used in a production environment, a private
    signing key must be created.  For development and testing in a
-   development environemt no key is needed and this section may be skipped.
+   development environment no key is needed and this section may be skipped.
 
  - In addition to the signing key, a public certificate will be generated,
-   which will be used by LOCKSS to validate plugins.  If standard LOCKSS
-   plugins will also be used, this certificate should be combined with the
-   existing certificates in the standard lockss keystore.
+   which will be used by the LOCKSS system to validate plugins.  If
+   standard LOCKSS-supplied plugins will also be used, this certificate
+   should be combined with the existing certificates in the standard
+   LOCKSS-supplied keystore.
 
- - Checkout the develop bransh of the lockss-core project:\
+ - Checkout the develop branch of the lockss-core project:\
 	`git clone https://github.com/lockss/lockss-core.git`\
-	`git checkout develop`\
-	`cd lockss-core`
+	`cd lockss-core`\
+	`git checkout develop`
 
  - If combining certs, copy src/main/java/org/lockss/plugin/lockss.keystore
    to some file \<cert_file\>.
@@ -42,14 +43,14 @@ Plugin scaffolding for the German National Hosting Plugins
 ### Building and Signing Plugins.
 
  - In the gnh-plugins directory:
-    - For development: `mvn package -Dinsecure`\.  This will create an unsigned plugin which can only be used in the development environemt.
-    - For production: `mvn package -Dkeystore.location=<private_keystore_file> -Dkeystore.alias=<alias>`.  Supply the keystore passphrase when prompted, or on the command line with `-Dkeystore.password=<password>`.\
+    - For development: `mvn package -Dtesting`\.  This will create an plugin signed with a non-secret key, suitable for use in the development environment.
+    - For production: `mvn package -Dkeystore.location=<private_keystore_file> -Dkeystore.alias=<alias>`.  Supply the keystore passphrase when prompted, or on the command line with `-Dkeystore.password=<password>`.
     - The plugin jar(s) will be written to target/pluginjars .
 
 ### Using Plugins.
 
  - To load a signed or unsigned plugin into the development and testing
-   environemt, pass the path to the plugin jar to runcluster with `-jar
+   environment, pass the path to the plugin jar to runcluster with `-jar
    <plugin_jar>`.  Either org.lockss.plugin.registryJars or
    org.lockss.plugin.registry must also be set.  See
    [runcluster](https://github.com/lockss/laaws-dev-scripts/tree/develop/runcluster)
@@ -62,6 +63,4 @@ Plugin scaffolding for the German National Hosting Plugins
 
 ### Testing Plugins.
 
-- See the testing framework in the runcluster directory of the [laaws-dev-scripts project](https://github.com/lockss/laaws-dev-scripts.git
-
-http://github.com/lockss/laaws-dev-scripts).
+- See the testing framework in the runcluster directory of the [laaws-dev-scripts project](https://github.com/lockss/laaws-dev-scripts/tree/develop/runcluster).
